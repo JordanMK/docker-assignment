@@ -1,0 +1,36 @@
+# Node modules and npm logs
+node_modules
+npm-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Environment files
+*.env
+.env*
+
+# Build outputs
+dist
+build
+
+# Logs
+logs
+*.log
+
+# Editor-specific files
+.vscode
+.idea
+.DS_Store
+*.swp
+*.swo
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# Git-related files
+.git
+.gitignore
+
+# Temporary files
+*.tmp
+*.bak

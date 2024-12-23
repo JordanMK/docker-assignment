@@ -1,0 +1,34 @@
+# Node modules and npm debug logs
+node_modules
+npm-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Environment files
+*.env
+.env*
+
+# Build outputs
+.next
+out
+dist
+
+# Editor-specific files
+.vscode
+.idea
+.DS_Store
+*.swp
+*.swo
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# Git-related files
+.git
+.gitignore
+
+# Logs
+logs
+*.log
+
