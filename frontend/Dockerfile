@@ -11,8 +11,6 @@ COPY . .
 # Development stage
 FROM base AS development
 
-ENV NODE_ENV=development
-
 EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
@@ -20,11 +18,11 @@ CMD ["npm", "run", "dev"]
 # Production stage
 FROM base AS production
 
-RUN npm run build
+ARG NEXT_PUBLIC_API_URL
+
+RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} npm run build
 
 RUN npm install --production
-
-ENV NODE_ENV=production
 
 EXPOSE 3000
 
