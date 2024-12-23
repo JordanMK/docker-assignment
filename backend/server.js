@@ -46,6 +46,9 @@ const server = async () => {
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
+      if (process.env.NODE_ENV) {
+      console.log(`Running ${process.env.NODE_ENV}`)
+      }
     });
   } catch (error) {
     console.log("Failed to strt server.....", error.message);
