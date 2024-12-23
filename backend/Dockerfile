@@ -22,8 +22,6 @@ FROM base AS production
 
 ENV NODE_ENV=production
 
-RUN npm run build
-
 RUN npm install --production
 
 EXPOSE 3000
