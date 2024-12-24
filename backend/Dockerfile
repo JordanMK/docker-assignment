@@ -8,13 +8,6 @@ RUN npm install
 
 COPY . .
 
-# Development stage
-FROM base AS development
-
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
-
 # Production stage
 FROM base AS production
 

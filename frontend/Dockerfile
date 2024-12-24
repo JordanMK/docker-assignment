@@ -1,3 +1,4 @@
+# Base stage
 FROM node:21-alpine AS base
 
 WORKDIR /app
@@ -7,13 +8,6 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
-
-# Development stage
-FROM base AS development
-
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
 
 # Production stage
 FROM base AS production
@@ -25,4 +19,3 @@ RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} npm run build
 RUN npm install --production
 
 CMD ["npm", "start"]
-
