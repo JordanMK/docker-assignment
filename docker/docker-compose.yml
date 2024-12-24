@@ -6,10 +6,12 @@ services:
       context: ../frontend
       target: production
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+        NEXT_PUBLIC_API_URL: http://${API_DOMAIN_NAME}/api/v1
     ports:
       - "3000:3000"
     env_file: ../frontend/prod.env
+    environment:
+      - NEXT_PUBLIC_API_URL=http://${API_DOMAIN_NAME}/api/v1
     depends_on:
       - backend
     networks:
@@ -22,6 +24,8 @@ services:
     ports:
       - "8000:8000"
     env_file: ../backend/prod.env
+    environment:
+      - CLIENT_URL=http://${DOMAIN_NAME}
     depends_on:
       - mongodb
     networks:
@@ -36,6 +40,22 @@ services:
       - mongodb_data:/data/db
     networks:
       - taskfyer_network
+
+  nginx:
+    build:
+      context: ../nginx
+    ports:
+      - "80:80"
+    env_file: .env
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - API_DOMAIN_NAME=${API_DOMAIN_NAME}
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - taskfyer_network
+
 
 volumes:
   mongodb_data:
