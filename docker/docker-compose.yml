@@ -7,8 +7,6 @@ services:
       target: production
       args:
         NEXT_PUBLIC_API_URL: http://${API_DOMAIN_NAME}/api/v1
-    ports:
-      - "3000:3000"
     env_file: ../frontend/prod.env
     environment:
       - NEXT_PUBLIC_API_URL=http://${API_DOMAIN_NAME}/api/v1
@@ -21,8 +19,6 @@ services:
     build:
       context: ../backend
       target: production
-    ports:
-      - "8000:8000"
     env_file: ../backend/prod.env
     environment:
       - CLIENT_URL=http://${DOMAIN_NAME}
@@ -34,8 +30,6 @@ services:
   mongodb:
     image: mongo
     container_name: mongodb
-    ports:
-      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
     networks:
@@ -47,15 +41,11 @@ services:
     ports:
       - "80:80"
     env_file: .env
-    environment:
-      - DOMAIN_NAME=${DOMAIN_NAME}
-      - API_DOMAIN_NAME=${API_DOMAIN_NAME}
     depends_on:
       - frontend
       - backend
     networks:
       - taskfyer_network
-
 
 volumes:
   mongodb_data:

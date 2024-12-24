@@ -24,7 +24,5 @@ RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} npm run build
 
 RUN npm install --production
 
-EXPOSE 3000
-
 CMD ["npm", "start"]
 
