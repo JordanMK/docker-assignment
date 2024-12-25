@@ -18,4 +18,4 @@ RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} npm run build
 
 RUN npm install --production
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "prod"]
