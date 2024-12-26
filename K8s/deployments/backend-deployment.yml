@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: taskfyer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: jordanvives/taskfyer-api
+          ports:
+            - containerPort: 4000
+          env:
+          - name: MONGO_URI
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: MONGO_URI
+          - name: CLIENT_URL
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: CLIENT_URL
+          - name: PORT
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: PORT
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: JWT_SECRET
+
