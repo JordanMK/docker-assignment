@@ -9,6 +9,7 @@ import MainContentLayout from "@/providers/MainContentLayout";
 import SidebarProvider from "@/providers/SidebarProvider";
 import MainLayout from "@/providers/MainLayout";
 import GTMInitialiser from "@/providers/GTMInitialiser";
+import { PublicEnvScript } from "next-runtime-env";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <PublicEnvScript />
       </head>
       <body className={inter.className}>
         <UserProvider>

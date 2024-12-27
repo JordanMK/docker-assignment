@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useContext } from "react";
 import toast from "react-hot-toast";
+import { env } from "next-runtime-env";
 
 const UserContext = React.createContext();
 
@@ -9,11 +10,11 @@ const UserContext = React.createContext();
 axios.defaults.withCredentials = true;
 
 export const UserContextProvider = ({ children }) => {
-  if (!process.env.NEXT_PUBLIC_API_URL) {
-    console.error("NEXT_PUBLIC_API_URL env variable must be set in .env")
+  if (!env("NEXT_PUBLIC_API_URL")) {
+    console.error("NEXT_PUBLIC_API_URL env variable must be set in .env");
   }
 
-  const serverUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+  const serverUrl = env("NEXT_PUBLIC_API_URL") || "NEXT_PUBLIC_API_URL not set";
 
   const router = useRouter();
 

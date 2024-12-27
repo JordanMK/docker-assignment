@@ -2,14 +2,15 @@ import axios from "axios";
 import React, { createContext, useEffect } from "react";
 import { useUserContext } from "./userContext";
 import toast from "react-hot-toast";
+import { env } from "next-runtime-env";
 
 const TasksContext = createContext();
 
-if (!process.env.NEXT_PUBLIC_API_URL) {
+if (!env("NEXT_PUBLIC_API_URL")) {
   console.error("NEXT_PUBLIC_API_URL env variable must be set in .env")
 }
 
-const serverUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+const serverUrl = env("NEXT_PUBLIC_API_URL") || "NEXT_PUBLIC_API_URL not set";
 
 export const TasksProvider = ({ children }) => {
   const userId = useUserContext().user._id;

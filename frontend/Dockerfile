@@ -9,10 +9,6 @@ RUN npm install
 
 COPY . .
 
-ARG NEXT_PUBLIC_API_URL
-
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-
 RUN npm run build
 
 # Production stage
@@ -28,4 +24,4 @@ COPY --from=builder /app/package.json ./package.json
 
 RUN npm install next
 
-CMD ["npm", "run", "prod"]
+CMD ["npm", "start"]
