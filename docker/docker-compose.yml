@@ -5,8 +5,6 @@ services:
     build:
       context: ../frontend
       target: production
-      args:
-        NEXT_PUBLIC_API_URL: http://${API_DOMAIN_NAME}/api/v1
     env_file: ../frontend/prod.env
     environment:
       - NEXT_PUBLIC_API_URL=http://${API_DOMAIN_NAME}/api/v1
@@ -30,9 +28,6 @@ services:
   mongodb:
     image: mongo
     container_name: mongodb
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - mongodb_data:/data/db
     networks:
