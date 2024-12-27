@@ -1,5 +1,5 @@
 # Base stage
-FROM node:21-alpine AS base
+FROM node:21-alpine AS builder
 
 WORKDIR /app
 
@@ -9,13 +9,23 @@ RUN npm install
 
 COPY . .
 
-# Production stage
-FROM base AS production
-
 ARG NEXT_PUBLIC_API_URL
 
-RUN NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} npm run build
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
-RUN npm install --production
+RUN npm run build
+
+# Production stage
+FROM node:21-alpine AS production
+
+WORKDIR /app
+
+COPY --from=builder /app/.next ./.next
+
+COPY --from=builder /app/public ./public
+
+COPY --from=builder /app/package.json ./package.json
+
+RUN npm install next
 
 CMD ["npm", "run", "prod"]

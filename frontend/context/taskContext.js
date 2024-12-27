@@ -6,10 +6,10 @@ import toast from "react-hot-toast";
 const TasksContext = createContext();
 
 if (!process.env.NEXT_PUBLIC_API_URL) {
-  throw new Error("NEXT_PUBLIC_API_URL env variable must be set in .env")
+  console.error("NEXT_PUBLIC_API_URL env variable must be set in .env")
 }
 
-const serverUrl = process.env.NEXT_PUBLIC_API_URL;
+const serverUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
 
 export const TasksProvider = ({ children }) => {
   const userId = useUserContext().user._id;
