@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: jordanvives/taskfyer-api
+          image: jordanvives/taskfyer-api:latest
           ports:
             - containerPort: 4000
           env:
