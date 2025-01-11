@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: network-policy
+  namespace: {{ .Values.namespace }}
+spec:
+  podSelector: {}
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: frontend  # Allow only frontend to access the backend
+    - from:
+        - podSelector:
+            matchLabels:
+              app: backend  # Allow only backend to access MongoDB
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: mongo  # Allow backend to access MongoDB

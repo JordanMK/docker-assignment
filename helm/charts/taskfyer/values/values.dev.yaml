@@ -1,0 +1,11 @@
+namespace: taskfyer-dev
+
+backend:
+  image: jordanvives/taskfyer-api:dev
+  host: "api-dev.jordanmalekera.site"
+  clientUrl: "https://dev.jordanmalekera.site"
+
+frontend:
+  image: jordanvives/taskfyer:dev
+  host: "dev.jordanmalekera.site"
+  apiUrl: "https://api-dev.jordanmalekera.site/api/v1"

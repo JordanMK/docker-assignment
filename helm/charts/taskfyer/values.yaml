@@ -1,0 +1,23 @@
+namespace: taskfyer
+
+backend:
+  replicas: 1
+  image: jordanvives/taskfyer-api:latest
+  port: 4000
+  host: "api.jordanmalekera.site"
+  clientUrl: "http://jordanmalekera.site"
+  secrets:
+    name: secrets
+  
+
+frontend:
+  replicas: 1
+  image: jordanvives/taskfyer:latest
+  port: 3000
+  host: "jordanmalekera.site"
+  apiUrl: "http://api.jordanmalekera.site/api/v1"
+
+mongo:
+  replicas: 1
+  image: mongo:latest
+  port: 27017
