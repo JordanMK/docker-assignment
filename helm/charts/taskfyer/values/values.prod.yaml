@@ -2,10 +2,9 @@ namespace: taskfyer-prod
 
 backend:
   replicas: 2
-  host: "api.jordanmalekera.site"
   clientUrl: "https://jordanmalekera.site"
 
 frontend:
   replicas: 2
   host: "jordanmalekera.site"
-  apiUrl: "https://api.jordanmalekera.site/api/v1"
+  apiUrl: "https://jordanmalekera.site/api/v1"

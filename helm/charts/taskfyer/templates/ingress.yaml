@@ -4,10 +4,28 @@ metadata:
   name: ingress
   namespace: {{ .Values.namespace }}
   annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: ""
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   ingressClassName: nginx
   rules:
+  - host: {{ .Values.frontend.host }}
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: {{ .Values.backend.port }}
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend
+            port:
+              number: {{ .Values.frontend.port }}
   - host: www.{{ .Values.frontend.host }}
     http:
       paths:
@@ -18,23 +36,3 @@ spec:
             name: frontend
             port:
               number: {{ .Values.frontend.port }}
-  - host: {{ .Values.frontend.host }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend
-            port:
-              number: {{ .Values.frontend.port }}
-  - host: {{ .Values.backend.host }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: backend
-            port:
-              number: {{ .Values.backend.port }}
