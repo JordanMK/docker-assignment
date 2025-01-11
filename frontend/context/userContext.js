@@ -11,10 +11,10 @@ axios.defaults.withCredentials = true;
 
 export const UserContextProvider = ({ children }) => {
   if (!env("NEXT_PUBLIC_API_URL")) {
-    console.error("NEXT_PUBLIC_API_URL env variable must be set in .env");
+    console.warn("NEXT_PUBLIC_API_URL env variable is undefined in .env");
   }
 
-  const serverUrl = env("NEXT_PUBLIC_API_URL") || "NEXT_PUBLIC_API_URL not set";
+  const serverUrl = env("NEXT_PUBLIC_API_URL") || "/api/v1";
 
   const router = useRouter();
 

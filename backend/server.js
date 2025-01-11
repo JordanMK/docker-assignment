@@ -15,8 +15,19 @@ const app = express();
 // middleware
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        process.env.CLIENT_URL, // default frontend URL
+      ];
+
+      if (!origin || allowedOrigins.includes(origin)) {
+        console.log(origin)
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error('Not allowed by CORS')); // Reject the request
+      }
+    },
+    credentials: true, // Allow credentials (cookies, etc.)
   })
 );
 app.use(express.json());
