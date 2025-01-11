@@ -5,6 +5,10 @@ on:
     branches:
       - main
       - dev
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'helm/**'
 
 jobs:
   deploy-to-docker-hub:
