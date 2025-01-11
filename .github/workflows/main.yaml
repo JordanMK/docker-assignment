@@ -11,28 +11,21 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    env: 
+      OCI_CLI_USER: ${{ secrets.OCI_USER }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_API_KEY }}
+      OCI_CLI_REGION: ${{ secrets.OCI_REGION }}
 
     steps:
       - name: Retrieve Code
         uses: actions/checkout@v2
 
-      - name: Set up OCI CLI
-        uses: oracle-actions/setup-oci-cli@v1
+      - name: Set up KUBECONFIG
+        uses: oracle-actions/configure-kubectl-oke@v1.5.0
         with:
-          oci-version: 'latest'
-
-      - name: Configure OCI CLI with Secrets
-        run: |
-          oci setup config --profile DEFAULT \
-            --user ${{ secrets.OCI_USER }} \
-            --fingerprint ${{ secrets.OCI_FINGERPRINT }} \
-            --key-file ${{ secrets.OCI_API_KEY }} \
-            --region ${{ secrets.OCI_REGION }} \
-            --tenancy ${{ secrets.OCI_TENANCY }}
-
-      - name: Retrieve Kubernetes Cluster Config
-        run: |
-          oci ce cluster create-kubeconfig --cluster-id ${{ secrets.OCI_CLUSTER_ID }} --file $HOME/.kube/config --region ${{ secrets.OCI_REGION }} --token-version 2.0.0  --kube-endpoint PUBLIC_ENDPOINT
+          cluster: ${{ secrets.OCI_CLUSTER_ID }}
 
       - name: Install Helm
         uses: azure/setup-helm@v1
