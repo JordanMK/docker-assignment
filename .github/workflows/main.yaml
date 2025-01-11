@@ -11,7 +11,7 @@ on:
       - dev
 
 jobs:
-  build_and_deploy:
+  deploy-to-oracle-cluster:
     runs-on: ubuntu-latest
     env: 
       OCI_CLI_USER: ${{ secrets.OCI_USER }}
