@@ -1,0 +1,49 @@
+name: Continuous Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Retrieve Code
+        uses: actions/checkout@v2
+
+      - name: Set up OCI CLI
+        uses: oracle-actions/setup-oci-cli@v1
+        with:
+          oci-version: 'latest'
+
+      - name: Configure OCI CLI with Secrets
+        run: |
+          oci setup config --profile DEFAULT \
+            --user ${{ secrets.OCI_USER }} \
+            --fingerprint ${{ secrets.OCI_FINGERPRINT }} \
+            --key-file ${{ secrets.OCI_API_KEY }} \
+            --region ${{ secrets.OCI_REGION }} \
+            --tenancy ${{ secrets.OCI_TENANCY }}
+
+      - name: Retrieve Kubernetes Cluster Config
+        run: |
+          oci ce cluster create-kubeconfig --cluster-id ${{ secrets.OCI_CLUSTER_ID }} --file $HOME/.kube/config --region ${{ secrets.OCI_REGION }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.5.4'
+
+      - name: Deploy to Dev Environment
+        run: |
+          helm upgrade --install taskfyer-dev helm/charts/taskfyer -f helm/charts/taskfyer/values/values.dev.yaml -n taskfyer-staging --create-namespace
+
+      - name: Deploy to Production Environment
+        if: github.ref == 'refs/heads/main'
+        run: |
+          helm upgrade --install taskfyer-prod helm/charts/taskfyer -f helm/charts/taskfyer/values/values.prod.yaml -n taskfyer-prod --create-namespace
