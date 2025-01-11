@@ -1,4 +1,4 @@
-# Base stage
+# Builder stage
 FROM node:21-alpine AS builder
 
 WORKDIR /app
