@@ -3,12 +3,21 @@ kind: Ingress
 metadata:
   name: ingress
   namespace: taskfyer
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: ""
 spec:
   ingressClassName: nginx
   rules:
-  - host: taskfyer.localhost #TODO: Change in production
+  - host: localhost # Change in production
     http:
       paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 4000
       - path: /
         pathType: Prefix
         backend:
@@ -16,13 +25,3 @@ spec:
             name: frontend
             port:
               number: 3000
-  - host: api.taskfyer.localhost #TODO: Change in production
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: backend
-            port:
-              number: 4000

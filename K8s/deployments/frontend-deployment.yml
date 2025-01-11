@@ -20,4 +20,4 @@ spec:
             - containerPort: 3000
           env:
             - name: NEXT_PUBLIC_API_URL
-              value: "http://api.taskfyer.localhost/api/v1"
+              value: "http://localhost/api/v1"

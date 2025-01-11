@@ -25,7 +25,7 @@ spec:
                 name: secrets
                 key: MONGO_URI
           - name: CLIENT_URL
-            value: "http://taskfyer.localhost"
+            value: "http://localhost"
           - name: PORT
             valueFrom:
               secretKeyRef:
