@@ -41,7 +41,7 @@ jobs:
       - name: Deploy to Dev Environment
         if: github.ref == 'refs/heads/dev' || github.event.pull_request.head.ref == 'dev'
         run: |
-          helm upgrade --install taskfyer-dev helm/charts/taskfyer -f helm/charts/taskfyer/values/values.dev.yaml -n taskfyer-staging --create-namespace
+          helm upgrade --install taskfyer-dev helm/charts/taskfyer -f helm/charts/taskfyer/values/values.dev.yaml -n taskfyer-dev --create-namespace
 
       - name: Deploy to Production Environment
         if: github.ref == 'refs/heads/main' || github.event.pull_request.head.ref == 'main'
