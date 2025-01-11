@@ -18,4 +18,4 @@ spec:
     - to:
         - podSelector:
             matchLabels:
-              app: mongodb  # Allow backend to access MongoDB
+              app: mongo  # Allow backend to access MongoDB
