@@ -5,12 +5,58 @@ on:
     branches:
       - main
       - dev
-  pull_request:
-    branches:
-      - main
-      - dev
 
 jobs:
+  deploy-to-docker-hub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: jordanvives
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and Push Frontend dev
+        if: github.ref == 'refs/heads/dev'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: jordanvives/taskfyer:dev
+
+      - name: Build and Push Backend dev
+        if: github.ref == 'refs/heads/dev'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: jordanvives/taskfyer-api:dev
+
+      - name: Build and Push Frontend prod
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          push: true
+          tags: jordanvives/taskfyer:latest
+
+      - name: Build and Push Backend prod
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: true
+          tags: jordanvives/taskfyer-api:latest
+
   deploy-to-oracle-cluster:
     runs-on: ubuntu-latest
     env: 
@@ -39,11 +85,11 @@ jobs:
           version: 'v3.5.4'
 
       - name: Deploy to Dev Environment
-        if: github.ref == 'refs/heads/dev' || github.event.pull_request.head.ref == 'dev'
+        if: github.ref == 'refs/heads/dev'
         run: |
           helm upgrade --install taskfyer-dev helm/charts/taskfyer -f helm/charts/taskfyer/values/values.dev.yaml -n taskfyer-dev --create-namespace
 
       - name: Deploy to Production Environment
-        if: github.ref == 'refs/heads/main' || github.event.pull_request.head.ref == 'main'
+        if: github.ref == 'refs/heads/main'
         run: |
           helm upgrade --install taskfyer-prod helm/charts/taskfyer -f helm/charts/taskfyer/values/values.prod.yaml -n taskfyer-prod --create-namespace
