@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
   build_and_deploy:
@@ -27,16 +29,21 @@ jobs:
         with:
           cluster: ${{ secrets.OCI_CLUSTER_ID }}
 
+      - name: Verify KUBECONFIG
+        run: |
+          kubectl get nodes
+
       - name: Install Helm
         uses: azure/setup-helm@v1
         with:
           version: 'v3.5.4'
 
       - name: Deploy to Dev Environment
+        if: github.ref == 'refs/heads/dev' || github.event.pull_request.head.ref == 'dev'
         run: |
           helm upgrade --install taskfyer-dev helm/charts/taskfyer -f helm/charts/taskfyer/values/values.dev.yaml -n taskfyer-staging --create-namespace
 
       - name: Deploy to Production Environment
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.event.pull_request.head.ref == 'main'
         run: |
           helm upgrade --install taskfyer-prod helm/charts/taskfyer -f helm/charts/taskfyer/values/values.prod.yaml -n taskfyer-prod --create-namespace
