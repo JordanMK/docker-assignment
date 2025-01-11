@@ -17,6 +17,7 @@ jobs:
       OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_API_KEY }}
       OCI_CLI_REGION: ${{ secrets.OCI_REGION }}
+      OCI_CLI_PASSPHRASE: ${{ secrets.OCI_PASSPHRASE }}
 
     steps:
       - name: Retrieve Code
